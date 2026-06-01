@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.16">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\QomNewsBase.Application\QomNewsBase.Application.csproj" />
+		<ProjectReference Include="..\QomNewsBase.Domain\QomNewsBase.Domain.csproj" />
+		<ProjectReference Include="..\QomNewsBase.Infrastructure\QomNewsBase.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwRoot\uploads\" />
+	</ItemGroup>
+
+</Project>
