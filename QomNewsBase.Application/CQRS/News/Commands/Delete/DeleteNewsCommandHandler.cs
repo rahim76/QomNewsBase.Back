@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using QomNewsBase.Application.Common.Results;
 using QomNewsBase.Application.Interfaces;
+using QomNewsBase.Application.Utilities;
 using QomNewsBase.Domain.Entities;
 
 namespace QomNewsBase.Application.CQRS;
@@ -19,7 +20,7 @@ public class DeleteNewsCommandHandler(IRepository<News> repository,
 
         if (!string.IsNullOrEmpty(news!.Thumbnail))
         {
-            var newsThumbnailPath = fileStorageService.GetThumbnailPath(news.Thumbnail);
+            var newsThumbnailPath = PathBuilder.GetThumbnailUrl(news.Thumbnail);
 
             fileStorageService.DeleteFile(newsThumbnailPath);
         }

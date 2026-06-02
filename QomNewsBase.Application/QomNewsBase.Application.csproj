@@ -19,6 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="CQRS\Ad\Commands\Delete\" />
+	  <Folder Include="CQRS\Ad\Commands\Update\" />
 	  <Folder Include="CQRS\NewsGroup\Commands\Create\" />
 	  <Folder Include="CQRS\NewsGroup\Commands\Delete\" />
 	  <Folder Include="CQRS\NewsGroup\Commands\Update\" />

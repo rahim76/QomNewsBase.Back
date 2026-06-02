@@ -18,8 +18,7 @@ public class CreateNewsCommandHandler(IRepository<News> repository,
 
         if (request.Image != null && request.Image.Length > 0)
         {
-            news.Thumbnail = await fileStorageService.UploadThumbnailAsync(request.Image.OpenReadStream(), request.Image.FileName, request.Image.ContentType);
-
+            news.Thumbnail = await fileStorageService.UploadThumbnailAsync(request.Image.OpenReadStream(), request.Image.FileName);
         }
 
         #endregion

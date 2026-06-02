@@ -26,8 +26,6 @@ public static class DependencyInjection
         services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
 
-        services.AddSingleton<DateAndTimeConverter>();
-
         return services;
     }
 }

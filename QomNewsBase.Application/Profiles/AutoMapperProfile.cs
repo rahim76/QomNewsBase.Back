@@ -12,26 +12,26 @@ public class AutoMapperProfile : Profile
 
         CreateMap<News, CreateNewsCommand>().ReverseMap();
         CreateMap<News, NewsResultDto>()
-            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.GetThumbnailUrl(src.Thumbnail) : string.Empty))
+            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.ShowThumbnailUrl(src.Thumbnail) : string.Empty))
             .ForMember(dest => dest.NewsGroupTitle, config => config.MapFrom(src => src.NewsGroup.Title))
-            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => new DateAndTimeConverter().ConvertToShamsi(src.CreatedAt)))
-            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? new DateAndTimeConverter().ConvertToShamsi(src.UpdatedAt.Value) : null))
+            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.CreatedAt)))
+            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? DateAndTimeConverter.ConvertToShamsi(src.UpdatedAt.Value) : null))
             .ForMember(dest => dest.CommentsCount, config => config.MapFrom(src => src.Comments.Count()))
             .ReverseMap();
 
         CreateMap<News, MostVisitedResult>()
-            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.GetThumbnailUrl(src.Thumbnail) : string.Empty))
+            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.ShowThumbnailUrl(src.Thumbnail) : string.Empty))
             .ForMember(dest => dest.NewsGroupTitle, config => config.MapFrom(src => src.NewsGroup.Title))
-            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => new DateAndTimeConverter().ConvertToPersianString(src.CreatedAt)))
+            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToPersianString(src.CreatedAt)))
             .ForMember(dest => dest.CommentsCount, config => config.MapFrom(src => src.Comments.Count()))
             .ReverseMap();
 
 
         CreateMap<News, GetOneNewsQueryResult>()
-            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.GetThumbnailUrl(src.Thumbnail) : string.Empty))
+            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.ShowThumbnailUrl(src.Thumbnail) : string.Empty))
             .ForMember(dest => dest.NewsGroupTitle, config => config.MapFrom(src => src.NewsGroup.Title))
-            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => new DateAndTimeConverter().ConvertToPersianString(src.CreatedAt)))
-            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? new DateAndTimeConverter().ConvertToShamsi(src.UpdatedAt.Value) : null))
+            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToPersianString(src.CreatedAt)))
+            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? DateAndTimeConverter.ConvertToShamsi(src.UpdatedAt.Value) : null))
             .ForMember(dest => dest.CommentCount, config => config.MapFrom(src => src.Comments.Count()))
             .ForMember(dest => dest.Comments, config => config.MapFrom(src => src.Comments))
             .ReverseMap();
@@ -49,13 +49,26 @@ public class AutoMapperProfile : Profile
         #region Comment
 
         CreateMap<Comment, CommentResultDto>()
-            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => new DateAndTimeConverter().ConvertToShamsi(src.CreatedAt)))
-            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? new DateAndTimeConverter().ConvertToShamsi(src.UpdatedAt.Value) : null))
+            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.CreatedAt)))
+            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? DateAndTimeConverter.ConvertToShamsi(src.UpdatedAt.Value) : null))
             .ForMember(dest => dest.NewsTitle, config => config.MapFrom(src => src.News.Title))
             .ReverseMap();
 
         CreateMap<Comment, CreateCommentCommand>().ReverseMap();
 
+
+        #endregion
+
+        #region Ad
+
+        CreateMap<Ad, CreateAdCommand>().ReverseMap();
+
+        CreateMap<Ad, AdResultDto>()
+            .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.CreatedAt)))
+            .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? DateAndTimeConverter.ConvertToShamsi(src.UpdatedAt.Value) : null))
+            .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.ShowAdThumbnailUrl(src.Thumbnail) : string.Empty))
+
+            .ReverseMap();
 
         #endregion
 

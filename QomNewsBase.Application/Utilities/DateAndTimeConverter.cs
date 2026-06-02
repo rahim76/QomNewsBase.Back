@@ -2,15 +2,15 @@
 
 namespace QomNewsBase.Application.Utilities;
 
-public class DateAndTimeConverter
+public static class DateAndTimeConverter
 {
-    public readonly string[] PersianMonths =
+    public static readonly string[] PersianMonths =
     {
         "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
         "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"
     };
 
-    public string ConvertToShamsi(DateTime date)
+    public static string ConvertToShamsi(DateTime date)
     {
         PersianCalendar persianCalendar = new PersianCalendar();
 
@@ -19,7 +19,7 @@ public class DateAndTimeConverter
             persianCalendar.GetDayOfMonth(date).ToString("00");
     }
 
-    public string ConvertToPersianString(DateTime date)
+    public static string ConvertToPersianString(DateTime date)
     {
         PersianCalendar persianCalendar = new PersianCalendar();
 

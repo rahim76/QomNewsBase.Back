@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwRoot\uploads\" />
+	  <Folder Include="wwwRoot\uploads\adThumbnails\" />
 	</ItemGroup>
 
 </Project>
