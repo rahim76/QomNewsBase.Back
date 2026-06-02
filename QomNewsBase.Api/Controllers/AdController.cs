@@ -26,4 +26,16 @@ public class AdController(ISender sender) : BaseController
         return Ok(result);
     }
 
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new DeleteAdCommand(id), cancellationToken);
+
+        if (!result.Success)
+            return BadRequest(result);
+
+        return Ok(result);
+
+    }
+
 }

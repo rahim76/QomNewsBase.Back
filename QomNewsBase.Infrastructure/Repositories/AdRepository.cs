@@ -8,6 +8,11 @@ using QomNewsBase.Infrastructure.Contexts;
 namespace QomNewsBase.Infrastructure.Repositories;
 public class AdRepository(QomNewsBaseContext context, IMapper mapper) : IAdRepository
 {
+    public async Task<bool> Any(Guid id, CancellationToken cancellationToken)
+    {
+        return await context.Ads.AsNoTracking().AnyAsync(a => a.Id == id, cancellationToken);
+    }
+
     public async Task<List<GetAllAdQueryResult>> GetAllGroupedByPosition(GetAllAdQuery query, CancellationToken cancellationToken)
     {
         var adsQuery = context.Ads.AsNoTracking()
