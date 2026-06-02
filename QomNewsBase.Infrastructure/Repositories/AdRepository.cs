@@ -8,20 +8,27 @@ using QomNewsBase.Infrastructure.Contexts;
 namespace QomNewsBase.Infrastructure.Repositories;
 public class AdRepository(QomNewsBaseContext context, IMapper mapper) : IAdRepository
 {
-    public async Task<List<AdResultDto>> GetAll(GetAllAdQuery query, CancellationToken cancellationToken)
+    public async Task<List<GetAllAdQueryResult>> GetAllGroupedByPosition(GetAllAdQuery query, CancellationToken cancellationToken)
     {
-        var result = await context.Ads.AsNoTracking()
+        var adsQuery = context.Ads.AsNoTracking()
             .Where(a => string.IsNullOrEmpty(query.Title) || a.Title.Contains(query.Title))
             .Where(a => query.StartDate == null || a.StartDate.Date >= query.StartDate.Value.Date)
             .Where(a => query.EndDate == null || a.EndDate.Date < query.EndDate.Value.Date)
             .Where(a => query.IsActive == null || a.IsActive == query.IsActive)
             .Where(a => query.ClickCount == null || a.ClickCount == query.ClickCount)
-            .Where(a => query.PositionType == null || (int)a.PositionType == query.PositionType)
-            .OrderByDescending(a => a.Priority)
-            .ProjectTo<AdResultDto>(mapper.ConfigurationProvider)
+            .OrderByDescending(a => a.Priority);
+
+        var groupedAds = await adsQuery
+            .GroupBy(a => a.PositionType)
             .ToListAsync(cancellationToken);
 
-        return result;
+        var result = groupedAds
+            .Select(g => new GetAllAdQueryResult
+            {
+                PositionType = g.Key,
+                Ads = g.AsQueryable().ProjectTo<AdResultDto>(mapper.ConfigurationProvider).ToList()
+            }).ToList();
 
+        return result;
     }
 }

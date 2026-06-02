@@ -3,7 +3,8 @@ using QomNewsBase.Application.Common.Results;
 
 namespace QomNewsBase.Application.CQRS;
 
-public class GetAllAdQuery(string? title, DateTime? startDate, DateTime? endDate, bool? isActive, long? clickCount, int? positionType) : IRequest<Result<List<AdResultDto>>>
+public class GetAllAdQuery(string? title, DateTime? startDate, DateTime? endDate, bool? isActive, long? clickCount, int? positionType)
+    : IRequest<Result<List<GetAllAdQueryResult>>>
 {
     public string? Title { get; set; } = title;
     public DateTime? StartDate { get; set; } = startDate;
