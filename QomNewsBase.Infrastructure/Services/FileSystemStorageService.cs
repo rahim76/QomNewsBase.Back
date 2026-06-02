@@ -1,35 +1,40 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using QomNewsBase.Application.Interfaces;
+using QomNewsBase.Application.Utilities;
 
 namespace QomNewsBase.Infrastructure.Services;
 
-public class FileSystemStorageService(IWebHostEnvironment webHostEnvironment,
-    IConfiguration configuration, ILogger<FileSystemStorageService> _logger) : IFileStorageService
+public class FileSystemStorageService(
+    ILogger<FileSystemStorageService> _logger) : IFileStorageService
 {
     public void DeleteFile(string filePath)
     {
         try
         {
-            if (Directory.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                Directory.Delete(filePath);
+                File.Delete(filePath);
+            }
+            else
+            {
+                _logger.LogWarning("File not found: '{filePath}'", filePath);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Not existsting file in '{filePath}'", filePath);
-            //throw;
+            _logger.LogError(ex, "Error deleting file '{filePath}'", filePath);
+            throw;
         }
     }
 
-    public async Task<string> UploadThumbnailAsync(Stream fileStream, string originalFileName, string contentType)
-    {
-        var fileExtension = Path.GetExtension(originalFileName);
-        var uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
-        var filePath = GetThumbnailPath(uniqueFileName);
 
+    private string GenerateUniqueFileName()
+    {
+        return Guid.NewGuid().ToString();
+    }
+
+    private async Task Upload(string filePath, Stream fileStream, string originalFileName)
+    {
         try
         {
             using (var file = new FileStream(filePath, FileMode.Create))
@@ -37,7 +42,6 @@ public class FileSystemStorageService(IWebHostEnvironment webHostEnvironment,
                 await fileStream.CopyToAsync(file);
             }
 
-            return uniqueFileName;
         }
         catch (Exception ex)
         {
@@ -46,9 +50,45 @@ public class FileSystemStorageService(IWebHostEnvironment webHostEnvironment,
         }
     }
 
-    public string GetThumbnailPath(string thumbnailName)
+    public async Task<string> UploadThumbnailAsync(Stream fileStream, string originalFileName)
     {
-        var basePath = Path.Combine(webHostEnvironment.WebRootPath, configuration.GetSection("ThumbnailUploadsFolder").Value!);
+        var fileExtension = Path.GetExtension(originalFileName);
+        var uniqueFileName = GenerateUniqueFileName() + fileExtension;
+
+        var filePath = GetThumbnailPath(uniqueFileName);
+
+        await Upload(filePath, fileStream, originalFileName);
+
+        return uniqueFileName;
+    }
+
+    public async Task<string> UploadAdThumbnailAsync(Stream fileStream, string originalFileName)
+    {
+        var fileExtension = Path.GetExtension(originalFileName);
+        var uniqueFileName = GenerateUniqueFileName() + fileExtension;
+        var filePath = GetAdThumbnailPath(uniqueFileName);
+
+        await Upload(filePath, fileStream, originalFileName);
+
+        return uniqueFileName;
+    }
+
+    private string GetThumbnailPath(string thumbnailName)
+    {
+        var basePath = PathBuilder.GetThumbnailUrl();
+
+        if (!Directory.Exists(basePath))
+        {
+            Directory.CreateDirectory(basePath);
+        }
+
+        return Path.Combine(basePath, thumbnailName);
+
+    }
+
+    private string GetAdThumbnailPath(string thumbnailName)
+    {
+        var basePath = PathBuilder.GetAdThumbnailUrl();
 
         if (!Directory.Exists(basePath))
         {

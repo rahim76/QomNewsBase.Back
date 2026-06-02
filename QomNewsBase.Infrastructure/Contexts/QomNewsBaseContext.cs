@@ -15,6 +15,7 @@ public class QomNewsBaseContext : DbContext
     public virtual DbSet<News> News { get; set; }
     public virtual DbSet<Comment> Comments { get; set; }
     public virtual DbSet<NewsGroup> NewsGroups { get; set; }
+    public virtual DbSet<Ad> Ads { get; set; }
 
     #endregion
 

@@ -1,4 +1,5 @@
-﻿using QomNewsBase.Api.Middlewares;
+﻿using Microsoft.AspNetCore.Hosting;
+using QomNewsBase.Api.Middlewares;
 using QomNewsBase.Application;
 using QomNewsBase.Application.Utilities;
 using QomNewsBase.Infrastructure;
@@ -45,6 +46,8 @@ builder.Services.AddSwaggerGen();
 
 var baseUrl = builder.Configuration["BaseUrl"];
 var thumbnailPath = builder.Configuration["ThumbnailUploadsFolder"];
+var adThumbnailPath = builder.Configuration["AdThumbnailUploadsFolder"];
+var wwwRootPath = builder.Environment.WebRootPath;
 
 builder.Services.AddHttpContextAccessor();
 
@@ -58,7 +61,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-PathBuilder.Initialize(baseUrl!, thumbnailPath!);
+PathBuilder.Initialize(wwwRootPath,baseUrl!, thumbnailPath!, adThumbnailPath!);
 
 app.UseStaticFiles();
 
