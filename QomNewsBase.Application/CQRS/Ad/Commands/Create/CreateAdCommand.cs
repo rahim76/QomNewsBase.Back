@@ -15,5 +15,5 @@ public class CreateAdCommand : IRequest<Result<bool>>
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public bool IsActive { get; set; }
-    public AdPositionType PositionType { get; set; }
+    public AdPositionTypeEnum PositionType { get; set; }
 }

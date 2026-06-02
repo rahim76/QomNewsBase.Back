@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileSystemStorageService>();
         services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IAdRepository, AdRepository>();
 
         return services;
     }

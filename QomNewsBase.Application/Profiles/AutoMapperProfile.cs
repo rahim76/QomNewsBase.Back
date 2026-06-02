@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using QomNewsBase.Application.CQRS;
+using QomNewsBase.Application.Extensions;
 using QomNewsBase.Application.Utilities;
 using QomNewsBase.Domain.Entities;
 
@@ -65,9 +66,11 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Ad, AdResultDto>()
             .ForMember(dest => dest.CreatedAtLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.CreatedAt)))
+            .ForMember(dest => dest.StartDateLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.StartDate)))
+            .ForMember(dest => dest.EndDateLocal, config => config.MapFrom(src => DateAndTimeConverter.ConvertToShamsi(src.EndDate)))
             .ForMember(dest => dest.UpdatedAtLocal, config => config.MapFrom(src => src.UpdatedAt != null ? DateAndTimeConverter.ConvertToShamsi(src.UpdatedAt.Value) : null))
             .ForMember(dest => dest.Thumbnail, config => config.MapFrom(src => !string.IsNullOrEmpty(src.Thumbnail) ? PathBuilder.ShowAdThumbnailUrl(src.Thumbnail) : string.Empty))
-
+            .ForMember(dest => dest.PositionTypeTitle, config => config.MapFrom(src => src.PositionType.ToDisplay(DisplayProperty.Name)))
             .ReverseMap();
 
         #endregion
