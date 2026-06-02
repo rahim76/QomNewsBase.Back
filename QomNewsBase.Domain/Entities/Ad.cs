@@ -13,7 +13,7 @@ public class Ad : BaseEntity<Guid>
     public DateTime EndDate { get; set; }
     public bool IsActive { get; set; }
     public long ClickCount { get; set; }//تعداد نمایش
-    public AdPositionType PositionType { get; set; } = AdPositionType.SidebarLeft;
+    public AdPositionTypeEnum PositionType { get; set; } = AdPositionTypeEnum.SidebarLeft;
 
     #region Relations
 

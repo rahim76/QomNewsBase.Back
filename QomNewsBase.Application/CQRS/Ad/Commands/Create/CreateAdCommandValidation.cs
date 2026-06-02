@@ -16,5 +16,9 @@ public class CreateAdCommandValidation : AbstractValidator<CreateAdCommand>
             .NotEmpty().WithMessage("targetUrl can't be empty.")
             .MaximumLength(1000).WithMessage("targetUrl length can't exceed 1000 characters.");
 
+        RuleFor(a => a.PositionType)
+            .NotNull()
+            .IsInEnum().WithMessage("PositionType is invalid.");
+
     }
 }

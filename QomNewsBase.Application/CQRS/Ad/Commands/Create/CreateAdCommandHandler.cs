@@ -16,7 +16,7 @@ public class CreateAdCommandHandler(IRepository<Ad> repository, IMapper mapper, 
 
         if (request.Thumbnail != null && request.Thumbnail.Length > 0)
         {
-            await fileStorageService.UploadAdThumbnailAsync(request.Thumbnail.OpenReadStream(), request.Thumbnail.FileName);
+            ad.Thumbnail = await fileStorageService.UploadAdThumbnailAsync(request.Thumbnail.OpenReadStream(), request.Thumbnail.FileName);
         }
 
         #endregion

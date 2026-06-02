@@ -17,7 +17,7 @@ public class GetOneNewsQueryHandler(IRepository<News> repository,
         #region Visit
 
         news!.Visit();
-        repository.Update(news);
+        repository.Update(news!);
         await repository.SaveChangesAsync(cancellationToken);
 
         #endregion

@@ -15,7 +15,7 @@ public class AdResultDto
     public string? EndDateLocal { get; set; }
     public bool IsActive { get; set; }
     public long ClickCount { get; set; }//تعداد نمایش
-    public AdPositionType PositionType { get; set; }
+    public AdPositionTypeEnum PositionType { get; set; }
     public string? PositionTypeTitle { get; set; }
     public DateTime CreatedAt { get; set; }
     public string CreatedAtLocal { get; set; } = null!;
