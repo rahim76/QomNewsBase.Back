@@ -3,15 +3,34 @@
 public class Result<T> : Result
 {
     public T? Data { get; private set; }
+    public int PageNumber { get; private set; }
+    public int PageSize { get; private set; }
+    public int TotalCount { get; private set; }
+    public bool HasMore { get; private set; }
 
-    private Result(bool success, string message, T? data) : base(success, message)
+    private Result(bool success,
+        string message,
+        T? data,
+        int pageNumber = 0,
+        int pageSize = 10,
+        int totalCount = 0,
+        bool hasMore = false) : base(success, message)
     {
         Data = data;
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        TotalCount = totalCount;
+        HasMore = hasMore;
     }
 
-    public static Result<T> Ok(T data, string message = "")
+    public static Result<T> Ok(T data,
+        string message = "",
+        int pageNumber = 0,
+        int pageSize = 10,
+        int totalCount = 0,
+        bool hasMore = false)
     {
-        return new Result<T>(true, message, data);
+        return new Result<T>(true, message, data, pageNumber, pageSize, totalCount, hasMore);
     }
 
     public static Result<T> Failure(string message)

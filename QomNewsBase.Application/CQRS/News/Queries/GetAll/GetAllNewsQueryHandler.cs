@@ -11,7 +11,7 @@ public class GetAllNewsQueryHandler(INewsRepository newsRepository)
     {
         var result = await newsRepository.FilterAsync(request, cancellationToken);
 
-        return Result<List<NewsResultDto>>.Ok(result);
+        return Result<List<NewsResultDto>>.Ok(result, "", request.PageNumber, request.PageSize, result.Count, result.Count == request.PageSize);
 
     }
 }
