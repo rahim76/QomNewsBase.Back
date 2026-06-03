@@ -8,9 +8,9 @@ namespace QomNewsBase.Api.Controllers;
 public class NewsController(ISender sender) : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll(string? title, int viewsCount, int newsGroupId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken, string? title, int viewsCount, int newsGroupId, int pageNumber = 1, int pageSize = 10)
     {
-        var result = await sender.Send(new GetAllNewsQuery(title, viewsCount, newsGroupId), cancellationToken);
+        var result = await sender.Send(new GetAllNewsQuery(title, viewsCount, newsGroupId, pageNumber, pageSize), cancellationToken);
         if (!result.Success)
             return BadRequest(result);
 

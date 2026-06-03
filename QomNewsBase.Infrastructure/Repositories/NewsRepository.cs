@@ -41,10 +41,16 @@ public class NewsRepository(QomNewsBaseContext context, IMapper mapper) : INewsR
                 a.NewsGroupId == query.NewsGroupId);
         }
 
+        newsQuery = newsQuery.OrderByDescending(a => a.CreatedAt);
+
+        var skip = (query.PageNumber - 1) * query.PageSize;
+
         return await newsQuery
-            .OrderByDescending(a => a.CreatedAt)
-            .ProjectTo<NewsResultDto>(mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+        .Skip(skip)
+        .Take(query.PageSize)
+        .ProjectTo<NewsResultDto>(mapper.ConfigurationProvider)
+        .ToListAsync(cancellationToken);
+
     }
 
     public async Task<News?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
